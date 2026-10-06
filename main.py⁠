@@ -1,0 +1,30 @@
+import os
+import requests
+import asyncio
+import edge_tts
+
+# 1. AI Script Generation using Gemini API
+def generate_script():
+    api_key = os.getenv("GEMINI_API_KEY")
+    prompt = "Write a 30-second viral YouTube Shorts script about a fascinating scientific or historical fact in Hindi."
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
+    
+    response = requests.post(url, json={"contents": [{"parts": [{"text": prompt}]}]})
+    result = response.json()
+    script = result['candidates'][0]['content']['parts'][0]['text']
+    return script
+
+# 2. Free Text-To-Speech (Microsoft Edge TTS)
+async def generate_audio(text):
+    communicate = edge_tts.Communicate(text, "hi-IN-MadhurNeural")
+    await communicate.save("voiceover.mp3")
+
+# Main Execution Process
+if __name__ == "__main__":
+    print("Generating AI Script...")
+    script_text = generate_script()
+    print("Script Generated:\n", script_text)
+    
+    print("Generating Hindi AI Voiceover...")
+    asyncio.run(generate_audio(script_text))
+    print("Audio saved successfully as voiceover.mp3!")
