@@ -10,7 +10,7 @@ def generate_script():
         raise ValueError("GEMINI_API_KEY is missing in GitHub Secrets!")
         
     prompt = "Write a 30-second viral YouTube Shorts script about an interesting space fact in Hindi."
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key={api_key}"
     
     payload = {
         "contents": [{"parts": [{"text": prompt}]}]
