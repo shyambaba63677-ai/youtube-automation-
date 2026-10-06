@@ -1,0 +1,30 @@
+name: Daily YouTube Automation
+
+on:
+  schedule:
+    - cron: '0 14 * * *' # रोज़ रात 7:30 बजे (IST) अपने आप चलेगा
+  workflow_dispatch: # मैन्युअल चलाने के लिए
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests edge-tts
+
+    - name: Run Automation Script
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      run: |
+        python main.py
